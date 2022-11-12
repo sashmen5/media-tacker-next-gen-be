@@ -5,7 +5,7 @@ export class CreateMovieDto {
   genres: [];
   homepage: string;
   id: number;
-  'imdb_id': string;
+  imdb_id: string;
   'original_language': string;
   'original_title': string;
   overview: string;

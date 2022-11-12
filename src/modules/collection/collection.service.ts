@@ -25,19 +25,17 @@ export class CollectionService {
   }
 
   async getCollectionByUserId(userId: string): Promise<Collection | null> {
-    const collection = await this.getCollection({userId});
-    return collection;
+    return await this.getCollection({userId});
   }
 
   async getCollection(query: object): Promise<Collection | null> {
-    const collection: Collection | null = await this.collectionModel
+    return await this.collectionModel
       .findOne(query)
       .exec();
-    return collection;
   }
 
   async addMovie(userId: string, movieId: string, status: string): Promise<any> {
-    const result = await this.collectionModel
+    await this.collectionModel
       .updateOne(
         { userId },
         {
@@ -55,6 +53,7 @@ export class CollectionService {
   }
 
   async updateMovieStatus(userId: string, movieId: string, status: string ): Promise<any> {
+    console.log('updateMovieStatus')
     const result = await this.collectionModel
       .updateOne(
        {

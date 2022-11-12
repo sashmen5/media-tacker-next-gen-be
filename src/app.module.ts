@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from "@nestjs/mongoose";
-import { ConfigModule } from '@nestjs/config';
 
 
 import { AppController } from './app.controller';
@@ -10,14 +9,15 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { UserModule } from "./modules/user/user.module";
 import { MovieModule } from "./modules/movie/movie.module";
 import { CollectionModule } from "./modules/collection/collection.module";
+import { SerieModule } from "./modules/serie/serie.module";
 
 @Module({
   imports: [
-
     MongooseModule.forRoot(DB_PROVIDER, { useNewUrlParser: true }),
     AuthModule,
     UserModule,
     MovieModule,
+    SerieModule,
     CollectionModule
   ],
   controllers: [AppController],
