@@ -54,7 +54,7 @@ export class CollectionService {
 
   async updateMovieStatus(userId: string, movieId: string, status: string ): Promise<any> {
     console.log('updateMovieStatus')
-    const result = await this.collectionModel
+    await this.collectionModel
       .updateOne(
        {
           'userId': userId,
@@ -63,6 +63,43 @@ export class CollectionService {
         {
           $push: {
             'movies.$.statuses': {
+              name: status,
+              date: Date.now()
+            }
+          }
+        }
+      );
+  }
+
+  async addSerie(userId: string, serieId: string, status: string): Promise<any> {
+    await this.collectionModel
+      .updateOne(
+        { userId },
+        {
+          $push: {
+            series: {
+              id: serieId,
+              statuses: [{
+                name: status,
+                date: Date.now()
+              }]
+            }
+          }
+        }
+      );
+  }
+
+  async updateSerieStatus(userId: string, serieId: string, status: string ): Promise<any> {
+    console.log('updateSerieStatus')
+    await this.collectionModel
+      .updateOne(
+        {
+          'userId': userId,
+          'series.id': serieId
+        },
+        {
+          $push: {
+            'series.$.statuses': {
               name: status,
               date: Date.now()
             }

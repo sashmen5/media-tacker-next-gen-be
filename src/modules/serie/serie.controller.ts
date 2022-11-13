@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { SERIE_CONTROLLER } from "../../constants/constants";
 import { SerieService } from './serie.service';
 import { CreateSerieDto } from './dto/create-serie-dto';
@@ -20,7 +20,7 @@ export class SerieController {
     return res.status(HttpStatus.OK).json(posts);
   }
 
-  @Get(':serieID')
+  @Get(':id')
   async getSerie(@Res() res:any, @Param('id' /*new ValidateObjectId()*/) id: string) {
     const serie = await this.serieService.getSerie(parseInt(id));
     if (!serie) {

@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport';
-import { Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Put, Req, Res, UseGuards } from '@nestjs/common';
 
 import { CollectionService } from './collection.service';
 import { MovieService } from '../movie/movie.service';
@@ -69,5 +69,25 @@ export class CollectionController {
     }
 
     return res.status(HttpStatus.OK).json({movieId, status});
+  }
+
+  @Put('updateSerieStatus')
+  @UseGuards(AuthGuard('jwt'))
+  async updateSerieStatus(@Res() res: any, @Req() request: RequestWithUser, @Body('id') serieId: string, @Body('status') status: string) {
+    const serie = await this.serieService.getSerie(serieId);
+    const { id }: User = request.user;
+    if (!serie) {
+      return res.status(HttpStatus.NO_CONTENT).json({error: {message: 'Serie not exists'}});
+    }
+    const query = {'userId': id, 'series.id': serieId};
+    const itemFromUserCollection = await this.collectionService.getCollection(query);
+    console.log('itemFromUserCollection', itemFromUserCollection)
+    if (!itemFromUserCollection) {
+      await this.collectionService.addSerie(id, serieId, status);
+    } else {
+      await this.collectionService.updateSerieStatus(id, serieId, status);
+    }
+
+    return res.status(HttpStatus.OK).json({serieId: serieId, status});
   }
 }
