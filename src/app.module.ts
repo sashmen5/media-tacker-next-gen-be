@@ -10,6 +10,7 @@ import { UserModule } from "./modules/user/user.module";
 import { MovieModule } from "./modules/movie/movie.module";
 import { CollectionModule } from "./modules/collection/collection.module";
 import { SerieModule } from "./modules/serie/serie.module";
+import { SeasonModule } from "./modules/seasons/season.module";
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { SerieModule } from "./modules/serie/serie.module";
     UserModule,
     MovieModule,
     SerieModule,
-    CollectionModule
+    CollectionModule,
+    SeasonModule
   ],
   controllers: [AppController],
   providers: [AppService],

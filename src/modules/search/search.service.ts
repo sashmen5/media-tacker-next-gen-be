@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from "rxjs";
+import { SeasonTMDB } from "../../interfaces/season.interface";
 
 interface Paginator<T extends unknown> {
   page?: number;
@@ -26,6 +27,11 @@ export class SearchService {
   async searchTvById(id: number | string, searchLanguage: string) {
     const url: string = `https://api.themoviedb.org/3/tv/${id}?api_key=d7bc2bebb66a0150abc3308cdd4e9d50&language=${searchLanguage}`;
     return await firstValueFrom(this.httpService.get(url));
+  }
+
+  async searchSeasonByNumber(serieId: number | string,seasonNumber: number, searchLanguage: string) {
+    const url: string = `https://api.themoviedb.org/3/tv/${serieId}/season/${seasonNumber}?api_key=d7bc2bebb66a0150abc3308cdd4e9d50&language=${searchLanguage}`;
+    return await firstValueFrom(this.httpService.get<SeasonTMDB>(url));
   }
 
   async searchPeopleById(id: number | string) {

@@ -5,11 +5,13 @@ import { SerieController } from './serie.controller';
 import { SerieService } from './serie.service';
 import { SerieSchema } from './schemas/serie.schema';
 import { SearchModule } from '../search/search.module';
+import { SeasonModule } from "../seasons/season.module";
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Serie', schema: SerieSchema }]),
-    SearchModule
+    SearchModule,
+    SeasonModule
   ],
   controllers: [SerieController],
   providers: [SerieService],
