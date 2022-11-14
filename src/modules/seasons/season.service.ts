@@ -1,6 +1,6 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 
 import { CreateSeasonDto } from './dto/create-season-dto';
 import { SearchService } from "../search/search.service";
@@ -14,27 +14,6 @@ export class SeasonService {
     @InjectModel(SEASON) private readonly seasonModel: Model<SeasonStatus>,
     private readonly searchService: SearchService,
   ) { }
-
-  // async getMovies(): Promise<Movie[]> {
-  //   const movies = await this.movieModel.find().exec();
-  //   return movies;
-  // }
-
-  async getSeasonStatus(id: number | string): Promise<SeasonStatus | null> {
-    const season = await this.seasonModel
-      .findOne({id})
-      .exec();
-
-    return season;
-  }
-
-  async getSeasonStatusBySerie(serieId: number | string): Promise<SeasonStatus[] | null> {
-    const season = await this.seasonModel
-      .find({serieId})
-      .exec();
-
-    return season;
-  }
 
   async addSeason(createSeasonDTO: CreateSeasonDto): Promise<SeasonStatus | null> {
     const newMovie: SeasonStatus = await new this.seasonModel(createSeasonDTO);
@@ -74,7 +53,6 @@ export class SeasonService {
   async deWatchSerie(episode: WatchedEpisode): Promise<SeasonStatus | null> {
     const season = await this.getSeason(episode.seasonId, episode.serieId);
 
-    console.log('season', season)
     if (!season) {
       return null;
     }
@@ -91,17 +69,10 @@ export class SeasonService {
     return await this.addSeason(seasonDTO);
   }
 
-
-
-
-
   async deleteSeason(id: number): Promise<any> {
     await this.seasonModel.deleteOne({id});
     return id;
   }
-
-
-
 
   async getSeasonsFromApi(serieId: number | string, seasonNumbers: number[]): Promise<SeasonTMDB[]> {
     const res: SeasonTMDB[] = [];
