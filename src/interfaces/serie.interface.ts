@@ -46,7 +46,7 @@ import { Document } from 'mongoose';
     name: string;
   }
 
-  export interface Season {
+  export interface SerieSeason {
     air_date: string;
     episode_count: number;
     id: number;
@@ -86,7 +86,7 @@ export interface Serie extends Document {
     poster_path: string;
     production_companies: ProductionCompany[];
     production_countries: ProductionCountry[];
-    seasons: Season[];
+    seasons: SerieSeason[];
     spoken_languages: {
       english_name: string;
       iso_639_1: string;
