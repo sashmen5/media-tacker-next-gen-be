@@ -61,7 +61,7 @@ import { Document } from 'mongoose';
     iso_639_1: string;
     name: string;
   }
-export interface Serie extends Document {
+export interface TmdbSerie {
     backdrop_path: string;
     created_by: CreatedBy[];
     episode_run_time: number[];
@@ -99,4 +99,40 @@ export interface Serie extends Document {
     vote_count: number;
     creationDate: number;
 }
+
+//===========================================
+
+
+
+
+  export interface Serie extends Document {
+    episodeRunTime: number[];
+    genres: Genre[];
+    seasons: {
+      id: number;
+      airDate: string;
+      episodeCount: number;
+      name: string;
+      overview: string;
+      posterPath: string;
+      seasonNumber: number;
+    }[];
+    id: number;
+    backdropPath: string;
+    firstAirDate: string;
+    homepageUrl: string;
+    inProduction: boolean;
+    lastAirDate: string;
+    name: string;
+    originalName: string;
+    overview: string;
+    popularity: number;
+    posterPath: string;
+    status: string;
+    type: string;
+    voteAverage: number;
+    voteCount: number;
+    creationDate: number;
+  }
+
 

@@ -38,6 +38,18 @@ export class MovieService {
     return newMovie.save();
   }
 
+  async refreshMovie(id: number, searchLanguage: string): Promise<Movie | null> {
+    await this.deleteMovie(id);
+    const tmdbMovie = await this.getMovieFromApi(id, searchLanguage);
+    const movie:CreateMovieDto = {
+      ...tmdbMovie,
+      creationDate: Date.now()
+    }
+
+    const newMovie = await new this.movieModel(movie);
+    return newMovie.save();
+  }
+
   async deleteMovie(id: number): Promise<any> {
     await this.movieModel.deleteOne({id});
     return id;

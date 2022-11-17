@@ -8,6 +8,7 @@ import { RequestWithUser } from '../movie/movie.controller';
 import { User } from '../../interfaces/user.interface';
 import { Serie } from "../../interfaces/serie.interface";
 import { SerieService } from "../serie/serie.service";
+import { toSerie } from "../serie/serie.utils";
 
 @Controller('collection')
 export class CollectionController {
@@ -42,9 +43,10 @@ export class CollectionController {
   async addSerie(@Res() res: any, @Param('id') id: number, @Body('searchLanguage') searchLanguage: string): Promise<Serie> {
     let serie = await this.serieService.getSerie(id);
     if (!serie) {
-      serie = await this.serieService.getSerieFromApi(id, searchLanguage);
-      await this.serieService.addSerie(serie);
-      return res.status(HttpStatus.OK).json({serie});
+      const tmdbSerie = await this.serieService.getSerieFromApi(id, searchLanguage);
+      const newSerie = toSerie(tmdbSerie) as Serie;
+      await this.serieService.addSerie(newSerie);
+      return res.status(HttpStatus.OK).json({serie: newSerie});
     }
 
     return res.status(HttpStatus.BAD_REQUEST).json({error: 'some error'});

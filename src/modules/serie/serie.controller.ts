@@ -38,7 +38,7 @@ export class SerieController {
       throw new NotFoundException('Serie does not exist!');
     }
 
-    const seasonNumbers = serie.seasons.map(season => season.season_number);
+    const seasonNumbers = serie.seasons.map(season => season.seasonNumber);
     console.log('seasonNumbers', seasonNumbers);
     const seasons = await this.seasonService.getSeasonsFromApi(serie.id, seasonNumbers);
 

@@ -50,6 +50,17 @@ export class MovieController {
     return res.status(HttpStatus.OK).json({movie: newMovie});
   }
 
+
+  @Post('/refresh/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async refreshMovie(@Res() res: any, @Param('id') id: string) {
+    const newMovie = await this.movieService.refreshMovie(parseInt(id), 'ru-RU');
+    if (!newMovie) {
+      throw new NotFoundException('Failed');
+    }
+    return res.status(HttpStatus.OK).json({movie: newMovie});
+  }
+
   @Delete(':movieID')
   @UseGuards(AuthGuard('jwt'))
   async deletePost(@Res() res: any, @Param('movieID' /*new ValidateObjectId()*/) movieID: string) {

@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Movie } from '../../interfaces/movie.interface';
-import { MOVIE, SERIE } from "../../constants/constants";
-import { Serie } from "../../interfaces/serie.interface";
+import { SERIE } from "../../constants/constants";
+import { Serie, TmdbSerie } from "../../interfaces/serie.interface";
 import { CreateSerieDto } from './dto/create-serie-dto';
 import { SearchService } from "../search/search.service";
 
@@ -22,11 +21,11 @@ export class SerieService {
   }
 
   async getSerie(id: number | string): Promise<Serie | null> {
-    const movie = await this.serieModel
+    const serie = await this.serieModel
       .findOne({id})
       .exec();
 
-    return movie;
+    return serie;
   }
 
   async addSerie(createSerieDTO: CreateSerieDto): Promise<Serie | null> {
@@ -44,8 +43,7 @@ export class SerieService {
     return id;
   }
 
-  async getSerieFromApi(id: number | string, searchLanguage: string): Promise<Serie> {
-    console.log('getSerieFromApi')
+  async getSerieFromApi(id: number | string, searchLanguage: string): Promise<TmdbSerie> {
     const serie = await this.searchService.searchTvById(id, searchLanguage);
     return serie?.data;
   }
