@@ -1,10 +1,25 @@
-import { Body, Controller, Delete, Get, HttpStatus, NotFoundException, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+  UseGuards
+} from "@nestjs/common";
 import { SERIE_CONTROLLER } from "../../constants/constants";
 import { SerieService } from './serie.service';
 import { CreateSerieDto } from './dto/create-serie-dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../interfaces/user.interface';
 import { SeasonService } from "../seasons/season.service";
+import { Serie } from "../../interfaces/serie.interface";
+import { toSerie } from "./serie.utils";
 
 export interface RequestWithUser extends Request {
   user: User;
@@ -70,9 +85,19 @@ export class SerieController {
     return res.status(HttpStatus.OK).json({movie: newMovie});
   }
 
-  @Delete(':movieID')
+  @Put('refresh/:id')
   @UseGuards(AuthGuard('jwt'))
-  async deletePost(@Res() res: any, @Param('movieID' /*new ValidateObjectId()*/) movieID: string) {
+  async refreshSerie(@Res() res: any, @Param('id') id: number, @Body('searchLanguage') searchLanguage: string): Promise<Serie> {
+      await this.serieService.deleteSerie(id);
+      const tmdbSerie = await this.serieService.getSerieFromApi(id, searchLanguage);
+      const newSerie = toSerie(tmdbSerie) as Serie;
+      await this.serieService.addSerie(newSerie);
+      return res.status(HttpStatus.OK).json({serie: newSerie});
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteSerie(@Res() res: any, @Param('id' /*new ValidateObjectId()*/) movieID: string) {
     const id = await this.serieService.deleteSerie(parseInt(movieID));
     if (!id) {
       throw new NotFoundException('Post does not exist!');
